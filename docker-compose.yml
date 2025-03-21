@@ -2,46 +2,49 @@ services:
   user-service:
     build: ./users-service
     container_name: users-service
-    restart: always
-#    volumes:
-#      - ./users-service:/var/www
+    restart: unless-stopped
+    volumes:
+      - ./users-service:/var/www
     networks:
       - laravel_network
-#    depends_on:
-#      - mysql
+    depends_on:
+      - mysql
 
   product-service:
     build: ./products-service
     container_name: products-service
     restart: unless-stopped
+    volumes:
+      - ./products-service:/var/www
     networks:
       - laravel_network
-#    depends_on:
-#      - mysql
+    depends_on:
+      - mysql
 
   order-service:
     build: ./orders-service
     container_name: orders-service
     restart: unless-stopped
+    volumes:
+      - ./products-service:/var/www
     networks:
       - laravel_network
-#    depends_on:
-#      - mysql
-#  mysql:
-#    image: mysql:8
-#    container_name: mysql
-#    restart: always
-#    environment:
-#      MYSQL_ROOT_PASSWORD: root_password
-#      MYSQL_DATABASE: three_services
-#      MYSQL_USER: user
-#      MYSQL_PASSWORD:
-#    networks:
-#      - laravel_network
-#    ports:
-#      - "3306:3306"
-#    volumes:
-#      - mysql_data:/var/www
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: three_services
+      MYSQL_PASSWORD:
+    networks:
+      - laravel_network
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/www
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -59,5 +62,5 @@ services:
 
 networks:
   laravel_network:
-#volumes:
-#  mysql_data:
+volumes:
+  mysql_data:
