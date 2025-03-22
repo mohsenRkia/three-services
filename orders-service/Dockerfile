@@ -1,3 +1,18 @@
+FROM composer:2.5.8
+
+WORKDIR /var/www
+
+COPY composer.json /var/www/composer.json
+
+RUN composer install \
+    --ignore-platform-reqs \
+    --no-interaction \
+    --no-plugins \
+    --no-scripts \
+    --prefer-dist
+
+
+
 FROM php:8.3.3-fpm-bookworm
 
 RUN apt-get update && apt-get install -y \
@@ -8,9 +23,9 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && docker-php-ext-install pdo pdo_mysql
 
-WORKDIR /var/www
 
 COPY . /var/www
+
 
 RUN chown -R www-data:www-data \
     /var/www \
@@ -18,7 +33,6 @@ RUN chown -R www-data:www-data \
     /var/www/bootstrap/cache
 
 RUN chmod -R 775 /var/www/storage
-
 
 EXPOSE 9000
 
