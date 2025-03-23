@@ -36,7 +36,7 @@ services:
     container_name: orders-service
     restart: unless-stopped
     volumes:
-      - ./products-service:/var/www
+      - ./orders-service:/var/www
     networks:
       - laravel_network
     depends_on:

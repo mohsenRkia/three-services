@@ -1,4 +1,4 @@
-FROM composer:2.5.8
+FROM composer:2.5.8 AS vendor
 
 WORKDIR /var/www
 
@@ -25,6 +25,8 @@ RUN apt-get update && apt-get install -y \
 
 
 COPY . /var/www
+
+COPY --from=vendor /usr/bin/composer /usr/bin/composer
 
 
 RUN chown -R www-data:www-data \
