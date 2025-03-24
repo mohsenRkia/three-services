@@ -1,4 +1,27 @@
 services:
+  gitlab:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 2G
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    restart: always
+    hostname: gitlab.example.com
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.example.com'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+    ports:
+      - "8080:80"
+      - "2222:22"
+    volumes:
+      - gitlab_config:/etc/gitlab
+      - gitlab_logs:/var/log/gitlab
+      - gitlab_data:/var/opt/gitlab
+    networks:
+      - laravel_network
   user-service:
     build: ./users-service
     container_name: users-service
@@ -66,6 +89,7 @@ services:
     networks:
       - laravel_network
     depends_on:
+      - gitlab
       - user-service
       - product-service
       - order-service
@@ -74,3 +98,6 @@ networks:
   laravel_network:
 volumes:
   mysql_data:
+  gitlab_config:
+  gitlab_logs:
+  gitlab_data:

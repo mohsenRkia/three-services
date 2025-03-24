@@ -10,6 +10,8 @@ class UserController extends Controller
 {
     public function index()
     {
+        Cache::set('name','mohsen');
+        dd(Cache::has('name'));
         $users = Cache::remember('users',60,function (){
            return User::all();
         });
