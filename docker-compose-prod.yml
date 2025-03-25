@@ -1,0 +1,110 @@
+services:
+  gitlab:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 2G
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    restart: always
+    hostname: git.developeryar.ir
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://git.developeryar.ir'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+        puma['worker_processes'] = 0
+        sidekiq['concurrency'] = 10
+        prometheus_monitoring['enable'] = false
+    ports:
+      - "8080:80"
+    volumes:
+      - gitlab_config:/etc/gitlab
+      - gitlab_logs:/var/log/gitlab
+      - gitlab_data:/var/opt/gitlab
+    networks:
+      - laravel_network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost/-/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5m
+  #  user-service:
+  #    build: ./users-service
+  #    container_name: users-service
+  #    restart: unless-stopped
+  #    volumes:
+  #      - ./users-service:/var/www
+  #    networks:
+  #      - laravel_network
+  #    depends_on:
+  #      - mysql
+  #      - redis
+  #
+  #  redis:
+  #    image: redis:latest
+  #    container_name: redis
+  #    restart: unless-stopped
+  #    ports:
+  #      - "6379:6379"
+  #    networks:
+  #      - laravel_network
+  #
+  #  product-service:
+  #    build: ./products-service
+  #    container_name: products-service
+  #    restart: unless-stopped
+  #    volumes:
+  #      - ./products-service:/var/www
+  #    networks:
+  #      - laravel_network
+  #    depends_on:
+  #      - mysql
+  #
+  #  order-service:
+  #    build: ./orders-service
+  #    container_name: orders-service
+  #    restart: unless-stopped
+  #    volumes:
+  #      - ./orders-service:/var/www
+  #    networks:
+  #      - laravel_network
+  #    depends_on:
+  #      - mysql
+  #  mysql:
+  #    image: mysql:8
+  #    container_name: mysql
+  #    restart: always
+  #    environment:
+  #      MYSQL_ROOT_PASSWORD: root_password
+  #      MYSQL_DATABASE: three_services
+  #      MYSQL_PASSWORD:
+  #    networks:
+  #      - laravel_network
+  #    ports:
+  #      - "3306:3306"
+  #    volumes:
+  #      - mysql_data:/var/www
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx-prod.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    networks:
+      - laravel_network
+    depends_on:
+      - gitlab
+
+networks:
+  laravel_network:
+volumes:
+  mysql_data:
+  gitlab_config:
+  gitlab_logs:
+  gitlab_data:
