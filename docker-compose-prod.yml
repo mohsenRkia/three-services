@@ -4,7 +4,7 @@ services:
       resources:
         limits:
           cpus: '0.75'
-          memory: 2G
+          memory: 3G
     image: gitlab/gitlab-ce:latest
     container_name: gitlab
     restart: always
