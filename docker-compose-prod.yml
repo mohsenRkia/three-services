@@ -11,13 +11,15 @@ services:
     hostname: git.developeryar.ir
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://git.developeryar.ir'
+        external_url 'https://git.developeryar.ir'
         gitlab_rails['gitlab_shell_ssh_port'] = 2222
         puma['worker_processes'] = 0
         sidekiq['concurrency'] = 10
         prometheus_monitoring['enable'] = false
     ports:
       - "8080:80"
+      - "2222:22"
+      - "8443:443"
     volumes:
       - gitlab_config:/etc/gitlab
       - gitlab_logs:/var/log/gitlab
