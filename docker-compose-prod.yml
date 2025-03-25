@@ -11,7 +11,7 @@ services:
     hostname: git.developeryar.ir
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://git.developeryar.ir'
+        external_url 'http://git.developeryar.ir'
         gitlab_rails['gitlab_shell_ssh_port'] = 2222
         puma['worker_processes'] = 0
         sidekiq['concurrency'] = 10
