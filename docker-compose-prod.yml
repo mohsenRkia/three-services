@@ -1,10 +1,10 @@
 services:
   gitlab:
-    deploy:
-      resources:
-        limits:
-          cpus: '0.75'
-          memory: 3G
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.75'
+#          memory: 3G
     image: gitlab/gitlab-ce:latest
     container_name: gitlab
     restart: always
@@ -104,7 +104,7 @@ services:
 networks:
   laravel_network:
 volumes:
-  mysql_data:
+#  mysql_data:
   gitlab_config:
   gitlab_logs:
   gitlab_data:
