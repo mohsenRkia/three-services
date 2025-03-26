@@ -4,7 +4,7 @@ services:
       resources:
         limits:
           cpus: '0.75'
-          memory: 2048M
+          memory: 2560M
     image: gitlab/gitlab-ce:latest
     container_name: gitlab
     restart: always
@@ -26,10 +26,10 @@ services:
       - laravel_network
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost/-/health || exit 1"]
-      interval: 30s
+      interval: 60s
       timeout: 60s
       retries: 5
-      start_period: 5m
+      start_period: 10m
 
   nginx:
     image: nginx:latest
