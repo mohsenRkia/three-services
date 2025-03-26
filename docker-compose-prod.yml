@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   gitlab:
     deploy:
@@ -18,10 +16,9 @@ services:
         puma['worker_processes'] = 0
         sidekiq['concurrency'] = 10
         prometheus_monitoring['enable'] = false
-        nginx['listen_port'] = 80
     ports:
       - "2222:22"
-      - "8181:8181"
+      - "8181:80"  # اینجا اصلاح شد
     volumes:
       - gitlab_config:/etc/gitlab
       - gitlab_logs:/var/log/gitlab
