@@ -21,6 +21,7 @@ services:
         nginx['listen_port'] = 80
     ports:
       - "2222:22"
+      - "8181:8181"
     volumes:
       - gitlab_config:/etc/gitlab
       - gitlab_logs:/var/log/gitlab
