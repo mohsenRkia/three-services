@@ -15,12 +15,10 @@ services:
         gitlab_rails['gitlab_shell_ssh_port'] = 2222
         puma['worker_processes'] = 1
         sidekiq['max_concurrency'] = 5
-        postgresql['shared_buffers'] = "256MB"
+        postgresql['shared_buffers'] = "128MB"
         postgresql['max_worker_processes'] = 2
-        redis['max_memory'] = "128MB"
+        redis['max_memory'] = "64MB"
         prometheus_monitoring['enable'] = false
-        grafana['enable'] = false
-        alertmanager['enable'] = false
     ports:
       - "2222:22"
     volumes:
