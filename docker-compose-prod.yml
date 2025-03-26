@@ -18,7 +18,7 @@ services:
         prometheus_monitoring['enable'] = false
     ports:
       - "2222:22"
-      - "8181:80"  # اینجا اصلاح شد
+      - "8443:443"  # اینجا اصلاح شد
     volumes:
       - gitlab_config:/etc/gitlab
       - gitlab_logs:/var/log/gitlab
