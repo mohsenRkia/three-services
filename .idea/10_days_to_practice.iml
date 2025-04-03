@@ -350,6 +350,7 @@
       <excludeFolder url="file://$MODULE_DIR$/users-service/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/users-service/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/users-service/vendor/predis/predis" />
+      <excludeFolder url="file://$MODULE_DIR$/users-service/vendor/tymon/jwt-auth" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
