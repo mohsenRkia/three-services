@@ -7,7 +7,7 @@ services:
           memory: 4096M
     image: gitlab/gitlab-ce:latest
     container_name: gitlab
-    restart: always
+    restart: unless-stopped
     hostname: git.developeryar-local.ir
     environment:
       GITLAB_OMNIBUS_CONFIG: |
