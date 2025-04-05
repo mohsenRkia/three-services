@@ -77,7 +77,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/www
+      - mysql_data:/var/opt/mysql
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -98,8 +98,13 @@ services:
 
 networks:
   laravel_network:
+    driver: bridge
+    attachable: true
+    name: laravel_network
+    external: false
 volumes:
   mysql_data:
+    driver: local
   gitlab_config:
   gitlab_logs:
   gitlab_data:

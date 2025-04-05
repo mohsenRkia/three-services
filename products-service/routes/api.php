@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Middleware\AuthenticateJWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::get('/products', function (Request $request) {
+    dd('products');
+})->middleware(AuthenticateJWT::class);

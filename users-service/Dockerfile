@@ -20,6 +20,9 @@ RUN apt-get update && apt-get install -y \
     vim \
     libzip-dev \
     zip \
+    net-tools \
+    iputils-ping \
+    iproute2 \
     unzip \
     && docker-php-ext-install pdo pdo_mysql
 

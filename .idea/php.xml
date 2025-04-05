@@ -357,6 +357,8 @@
       <path value="$PROJECT_DIR$/users-service/vendor/lcobucci/jwt" />
       <path value="$PROJECT_DIR$/users-service/vendor/lcobucci/clock" />
       <path value="$PROJECT_DIR$/users-service/vendor/tymon/jwt-auth" />
+      <path value="$PROJECT_DIR$/products-service/vendor/laravel/sanctum" />
+      <path value="$PROJECT_DIR$/orders-service/vendor/laravel/sanctum" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
