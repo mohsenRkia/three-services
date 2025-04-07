@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && docker-php-ext-install pdo pdo_mysql
 
-
+COPY ./php/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 COPY . /var/www
 
 COPY --from=vendor /usr/bin/composer /usr/bin/composer

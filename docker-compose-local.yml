@@ -21,7 +21,7 @@ services:
       - gitlab_data:/var/opt/gitlab
     networks:
       - laravel_network
-  user-service:
+  users-service:
     build: ./users-service
     container_name: users-service
     restart: unless-stopped
@@ -42,7 +42,7 @@ services:
     networks:
       - laravel_network
 
-  product-service:
+  products-service:
     build: ./products-service
     container_name: products-service
     restart: unless-stopped
@@ -92,8 +92,8 @@ services:
       - laravel_network
     depends_on:
       - gitlab
-      - user-service
-      - product-service
+      - users-service
+      - products-service
       - order-service
 
 networks:
