@@ -1,26 +1,26 @@
 services:
-  gitlab:
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 4096M
-    image: gitlab/gitlab-ce:latest
-    container_name: gitlab
-    restart: unless-stopped
-    hostname: git.developeryar-local.ir
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://git.developeryar-local.ir'
-        gitlab_rails['gitlab_shell_ssh_port'] = 2222
-    ports:
-      - "2222:22"
-    volumes:
-      - gitlab_config:/etc/gitlab
-      - gitlab_logs:/var/log/gitlab
-      - gitlab_data:/var/opt/gitlab
-    networks:
-      - laravel_network
+#  gitlab:
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '2'
+#          memory: 4096M
+#    image: gitlab/gitlab-ce:latest
+#    container_name: gitlab
+#    restart: unless-stopped
+#    hostname: git.developeryar-local.ir
+#    environment:
+#      GITLAB_OMNIBUS_CONFIG: |
+#        external_url 'http://git.developeryar-local.ir'
+#        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+#    ports:
+#      - "2222:22"
+#    volumes:
+#      - gitlab_config:/etc/gitlab
+#      - gitlab_logs:/var/log/gitlab
+#      - gitlab_data:/var/opt/gitlab
+#    networks:
+#      - laravel_network
   users-service:
     build: ./users-service
     container_name: users-service
@@ -48,6 +48,17 @@ services:
     restart: unless-stopped
     volumes:
       - ./products-service:/var/www
+    networks:
+      - laravel_network
+    depends_on:
+      - mysql
+
+  yii2-basic-service:
+    build: ./yii2-basic
+    container_name: yii2-basic
+    restart: unless-stopped
+    volumes:
+      - ./yii2-basic:/var/www
     networks:
       - laravel_network
     depends_on:
@@ -91,7 +102,7 @@ services:
     networks:
       - laravel_network
     depends_on:
-      - gitlab
+#      - gitlab
       - users-service
       - products-service
       - order-service
