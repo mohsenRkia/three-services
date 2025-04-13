@@ -18,7 +18,7 @@ class AuthenticateJWT
     {
         $token = $request->bearerToken();
         $response = Http::withHeaders([
-            'Host' => 'users.developeryar-local.ir'
+            'Host' => 'https://users.developeryar-local.ir/api/validate-token'
         ])->get('http://nginx');
         dd($response->body());
         return $next($request);
