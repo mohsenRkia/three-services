@@ -16,13 +16,18 @@ class AuthenticateJWT
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $response = Http::get('https://users-service:9000/api/validate-token', [
-            'headers' => [
-                'Authorization' => 'Bearer '.$request->bearerToken()
-            ]
-        ]);
+//        $response = Http::get('https://users-service:9000/api/validate-token', [
+//            'headers' => [
+//                'Authorization' => 'Bearer '.$request->bearerToken()
+//            ]
+//        ]);
 
-        dd($response->json());
+        $response = Http::withHeaders([
+            'Host' => 'https://users.developeryar-local.ir/api/validate-token',
+            'Authorization' => 'Bearer '.$request->bearerToken()
+        ])->get('http://nginx');
+
+        dd($response->body());
         $curl = curl_init();
 
         $token = $request->header('Authorization');
