@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticateJWT
@@ -16,7 +17,10 @@ class AuthenticateJWT
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->bearerToken();
-        dd($token);
+        $response = Http::withHeaders([
+            'Host' => 'users.developeryar-local.ir'
+        ])->get('http://nginx');
+        dd($response->body());
         return $next($request);
     }
 }
