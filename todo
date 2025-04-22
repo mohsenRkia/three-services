@@ -1,3 +1,5 @@
-add wallet
-add yii2 service
+add *wallet service
+add *yii2 service
 internal curl
+add elastic search to product service
+add *rabbitmq service
