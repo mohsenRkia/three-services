@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = Cache::remember('users',60,function (){
+        $users = Cache::remember('users_list',60,function (){
            return User::all();
         });
 
