@@ -359,6 +359,11 @@
       <path value="$PROJECT_DIR$/users-service/vendor/tymon/jwt-auth" />
       <path value="$PROJECT_DIR$/products-service/vendor/laravel/sanctum" />
       <path value="$PROJECT_DIR$/orders-service/vendor/laravel/sanctum" />
+      <path value="$PROJECT_DIR$/users-service/vendor/paragonie/constant_time_encoding" />
+      <path value="$PROJECT_DIR$/users-service/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/users-service/vendor/phpseclib/phpseclib" />
+      <path value="$PROJECT_DIR$/users-service/vendor/vladimir-yuldashev/laravel-queue-rabbitmq" />
+      <path value="$PROJECT_DIR$/users-service/vendor/php-amqplib/php-amqplib" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
