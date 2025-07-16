@@ -19,7 +19,15 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        SendUserRegisteredEvent::dispatch($user);
+        Queue::connection('rabbitmq')->pushRaw(
+            json_encode([
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ]),
+            'user_registered' // Queue name
+        );
+//        SendUserRegisteredEvent::dispatch($user);
         return response()->json(['token' => JWTAuth::fromUser($user)], 201);
     }
 
