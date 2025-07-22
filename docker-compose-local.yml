@@ -76,6 +76,17 @@ services:
     depends_on:
       - mysql
 
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service
+    restart: unless-stopped
+    volumes:
+      - ./notification-service:/var/www
+    networks:
+      - laravel_network
+    depends_on:
+      - mysql
+
   yii2-basic-service:
     build: ./yii2-basic
     container_name: yii2-basic
