@@ -2,4 +2,5 @@
 *.iml
 *.ipr
 *.iws
+django-service/.env
 modules.xml
