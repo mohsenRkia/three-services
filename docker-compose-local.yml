@@ -101,7 +101,7 @@ services:
   order-service:
     build: ./orders-service
     deploy:
-      replicas: 3
+      replicas: 2
     restart: unless-stopped
     volumes:
       - ./orders-service:/var/www
