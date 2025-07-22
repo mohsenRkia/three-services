@@ -7,6 +7,21 @@ services:
       - "15672:15672"
     networks:
       - laravel_network
+
+  golang-service:
+    container_name: golang-service
+    build:
+      context: ./golang-gin-ddd-structure-example
+      dockerfile: Dockerfile
+      args:
+        - ENV_FILE=.env
+    networks:
+      - laravel_network
+    depends_on:
+      - mysql
+    ports:
+      - "8000:8000"
+    restart: on-failure
 #  gitlab:
 #    deploy:
 #      resources:
@@ -114,6 +129,7 @@ services:
       - users-service
       - products-service
       - order-service
+      - golang-service
 
 networks:
   laravel_network:
