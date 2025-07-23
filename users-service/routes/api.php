@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -21,4 +22,9 @@ Route::get('/validate-token', function (Request $request) {
     } catch (\Exception $e) {
         return response()->json(['error' => 'Invalid token'], 401);
     }
+});
+
+Route::get('/test-curl',function (){
+   $test = Http::get("golang-service:8000/api/gateway");
+   dd($test->body());
 });
