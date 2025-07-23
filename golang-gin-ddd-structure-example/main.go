@@ -3,5 +3,5 @@ package main
 import "myGolangFramework/cmd"
 
 func main() {
-	cmd.Execute()
+	cmd.Execute("serve")
 }

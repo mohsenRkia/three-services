@@ -3,3 +3,4 @@
 *.ipr
 *.iws
 modules.xml
+/golang-gin-ddd-structure-example/tmp

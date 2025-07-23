@@ -15,7 +15,10 @@ var rootCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(serveCmd)
 }
-func Execute() {
+func Execute(defaultCommand string) {
+	if defaultCommand != "" {
+		os.Args = append([]string{os.Args[0], defaultCommand}, os.Args[1:]...)
+	}
 	if err := serveCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

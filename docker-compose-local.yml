@@ -12,9 +12,11 @@ services:
     container_name: golang-service
     build:
       context: ./golang-gin-ddd-structure-example
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-dev
       args:
         - ENV_FILE=.env
+    volumes:
+      - ./golang-gin-ddd-structure-example:/app
     networks:
       - laravel_network
     depends_on:
