@@ -1,4 +1,22 @@
 services:
+  elasticsearch:
+    image: elasticsearch:7.17.12
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - laravel_network
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
@@ -36,11 +54,14 @@ services:
       - laravel_network
     depends_on:
       - mysql
+      - elasticsearch
     ports:
       - "8080:8080"
     volumes:
       - ./django-service:/app
     restart: on-failure
+    environment:
+      - ELASTIC_HOST=http://elasticsearch:9200
 #  gitlab:
 #    deploy:
 #      resources:
@@ -169,6 +190,7 @@ networks:
     name: laravel_network
     external: false
 volumes:
+  elasticsearch-data:
   mysql_data:
     driver: local
   gitlab_config:
