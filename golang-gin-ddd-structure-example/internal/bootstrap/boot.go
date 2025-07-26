@@ -1,8 +1,8 @@
 package bootstrap
 
 import (
+	"myGolangFramework/internal/bootstrap/config/db"
 	"myGolangFramework/internal/bootstrap/routing"
-	"myGolangFramework/internal/infrastructure/config/db"
 	"myGolangFramework/pkg/customValidation"
 )
 

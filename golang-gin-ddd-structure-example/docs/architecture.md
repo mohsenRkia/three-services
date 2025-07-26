@@ -12,6 +12,8 @@ myapp/
 │   │   │   │   ├── email.go      # Email VO
 │   │   │   │   └── password.go   # Password VO
 │   │   │   ├── repository.go     # Interface ریپازیتوری
+│   │   │   └── event.go          # Domain Events
+│   │   │       └── user_created.go
 │   │   │
 │   │   └── ticket/               # مثال دوم: بلیط
 │   │       ├── entity.go
@@ -27,12 +29,13 @@ myapp/
 │   │   │   │   └── list.go
 │   │   │   ├── dto/              # Data Transfer Objectها
 │   │   │   │   └── user.go
+│   │   │   ├── Events/           #Application Events (برای notify لایه‌ی اپلیکیشن)
 │   │   │   └── service.go        # Application Service (Orchestrator)
 │   │   │
 │   │   └── ticket/
 │   │       └── ...
 │   │
-│   ├── delivery/               # لایه‌ی ارائه (I/O adapters)
+│   ├── delivery(interface)/               # لایه‌ی ارائه (I/O adapters)
 │   │   ├── http/                 # API HTTP
 │   │   │   ├── user/
 │   │   │   │   ├── handler.go    # کنترلر/هندلر کاربر
@@ -50,31 +53,32 @@ myapp/
 │   │   │       └── ...
 │   │   │
 │   │   ├── cli/                  # اگر رابط خط فرمان CLI داری
-│   │   │   └── user/
-│   │   │       └── commands.go
-│   │   │
-│   │   └── event/                # Event Consumerها برای معماری Event-Driven
-│   │       ├── user_created.go
-│   │       └── ...
+│   │       └── user/
+│   │           └── commands.go
 │   │
 │   ├── infrastructure/          # لایه‌ی زیرساخت (پیاده‌سازی‌ها)
-│   │   ├── persistence/         # پیاده‌سازی ریپازیتوری‌ها
+│   │   ├── persistence/         # پیاده‌سازی منطق ریپازیتوری‌ها
 │   │   │   ├── user/
 │   │   │   │   ├── repository.go  # UserRepositoryImpl (Postgres, etc.)
 │   │   │   │   └── model.go       # مدل دیتابیسی (ORM)
-│   │   │   └── ...
+│   │   ├── Messaging/
+│   │   │   ├── Events/
+│   │   │   │   └── Integration/      ← Integration Events (Publish to outside world)
+│   │   │   ├── Consumers/            ← Event Handlers
+│   │   │   └── Producers/            ← Publishes to RabbitMQ/Kafka/...
+│   │   │       └── ...
 │   │   │
 │   │   ├── cache/               # Redis, Memcached, ...
 │   │   ├── queue/               # Kafka, RabbitMQ، etc
 │   │   ├── email/               # Email providers (SMTP, SES, ...)
-│   │   ├── config/              # مدیریت تنظیمات برنامه
-│   │   │   ├── app.go
-│   │   │   └── db.go
 │   │   └── logging/             # پیاده‌سازی سیستم لاگ‌گیری
 │   │
 │   └── bootstrap/               # DI + اتصال لایه‌ها (با wire یا دستی)
 │       ├── wire.go              # تعریف dependency injection
 │       ├── server.go            # راه‌اندازی سرویس
+│       ├── config/              # مدیریت تنظیمات برنامه
+│       │   │   │   ├── app.go
+│       │   │   │   └── db.go
 │       └── container.go         # تعریف کانتینرهای DI
 │
 ├── pkg/                         # کتابخانه‌های قابل استفاده مجدد

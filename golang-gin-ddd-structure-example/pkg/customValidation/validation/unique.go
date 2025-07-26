@@ -3,7 +3,7 @@ package validation
 import (
 	"bytes"
 	"fmt"
-	"myGolangFramework/internal/infrastructure/config/db"
+	"myGolangFramework/internal/bootstrap/config/db"
 	"reflect"
 	"strings"
 	"unicode"

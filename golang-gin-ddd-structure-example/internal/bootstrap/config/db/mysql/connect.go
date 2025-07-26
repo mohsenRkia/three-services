@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"myGolangFramework/internal/infrastructure/config"
+	"myGolangFramework/internal/bootstrap/config"
 )
 
 func Connect(viper *config.Environment) (*gorm.DB, error) {

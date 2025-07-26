@@ -1,7 +1,7 @@
 package validation
 
 import (
-	"myGolangFramework/internal/infrastructure/config/db"
+	"myGolangFramework/internal/bootstrap/config/db"
 	"strings"
 
 	"github.com/go-playground/validator/v10"

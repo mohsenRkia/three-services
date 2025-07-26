@@ -2,8 +2,8 @@ package user
 
 import (
 	"gorm.io/gorm"
+	"myGolangFramework/internal/bootstrap/config/db"
 	"myGolangFramework/internal/domain/user"
-	"myGolangFramework/internal/infrastructure/config/db"
 	"myGolangFramework/internal/infrastructure/persistence/models"
 )
 

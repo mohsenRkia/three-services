@@ -1,7 +1,7 @@
 package migration
 
 import (
-	"myGolangFramework/internal/infrastructure/config/db"
+	"myGolangFramework/internal/bootstrap/config/db"
 )
 
 func Migrator() {

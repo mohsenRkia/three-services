@@ -3,7 +3,7 @@ package migration
 import (
 	"fmt"
 	"log"
-	db2 "myGolangFramework/internal/infrastructure/config/db"
+	db2 "myGolangFramework/internal/bootstrap/config/db"
 	"myGolangFramework/internal/infrastructure/persistence/models"
 )
 

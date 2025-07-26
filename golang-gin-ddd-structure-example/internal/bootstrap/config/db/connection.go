@@ -3,8 +3,8 @@ package db
 import (
 	"gorm.io/gorm"
 	"log"
-	"myGolangFramework/internal/infrastructure/config"
-	"myGolangFramework/internal/infrastructure/config/db/mysql"
+	"myGolangFramework/internal/bootstrap/config"
+	"myGolangFramework/internal/bootstrap/config/db/mysql"
 	"os"
 )
 

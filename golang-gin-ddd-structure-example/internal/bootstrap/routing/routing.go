@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
-	"myGolangFramework/internal/infrastructure/config"
+	"myGolangFramework/internal/bootstrap/config"
 )
 
 var GlobalRouterEngine *gin.Engine
