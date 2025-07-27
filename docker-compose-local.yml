@@ -4,19 +4,12 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=false
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
     ports:
       - "9200:9200"
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
     networks:
-      - laravel_network
+      - main_network
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
@@ -24,7 +17,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - laravel_network
+      - main_network
 
   golang-service:
     container_name: golang-service
@@ -36,7 +29,7 @@ services:
     volumes:
       - ./golang-gin-ddd-structure-example:/app
     networks:
-      - laravel_network
+      - main_network
     depends_on:
       - mysql
     ports:
@@ -51,7 +44,7 @@ services:
       args:
         - ENV_FILE=.env
     networks:
-      - laravel_network
+      - main_network
     depends_on:
       - mysql
       - elasticsearch
@@ -83,7 +76,7 @@ services:
 #      - gitlab_logs:/var/log/gitlab
 #      - gitlab_data:/var/opt/gitlab
 #    networks:
-#      - laravel_network
+#      - main_network
   users-service:
     build: ./users-service
     container_name: users-service
@@ -91,7 +84,7 @@ services:
     volumes:
       - ./users-service:/var/www
     networks:
-      - laravel_network
+      - main_network
     depends_on:
       - mysql
       - redis
@@ -103,7 +96,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - laravel_network
+      - main_network
 
   products-service:
     build: ./products-service
@@ -112,7 +105,7 @@ services:
     volumes:
       - ./products-service:/var/www
     networks:
-      - laravel_network
+      - main_network
     depends_on:
       - mysql
 
@@ -123,7 +116,7 @@ services:
     volumes:
       - ./notification-service:/var/www
     networks:
-      - laravel_network
+      - main_network
     depends_on:
       - mysql
 
@@ -134,7 +127,7 @@ services:
     volumes:
       - ./yii2-basic:/var/www
     networks:
-      - laravel_network
+      - main_network
     depends_on:
       - mysql
 
@@ -146,7 +139,7 @@ services:
     volumes:
       - ./orders-service:/var/www
     networks:
-      - laravel_network
+      - main_network
     depends_on:
       - mysql
   mysql:
@@ -158,7 +151,7 @@ services:
       MYSQL_DATABASE: three_services
       MYSQL_PASSWORD:
     networks:
-      - laravel_network
+      - main_network
     ports:
       - "3306:3306"
     volumes:
@@ -174,7 +167,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - /etc/ssl/developeryar-local.ir:/etc/nginx/ssl:ro
     networks:
-      - laravel_network
+      - main_network
     depends_on:
 #      - gitlab
       - users-service
@@ -184,15 +177,15 @@ services:
       - django-service
 
 networks:
-  laravel_network:
+  main_network:
     driver: bridge
     attachable: true
-    name: laravel_network
+    name: main_network
     external: false
 volumes:
   elasticsearch-data:
   mysql_data:
     driver: local
-  gitlab_config:
-  gitlab_logs:
-  gitlab_data:
+  #gitlab_config:
+  #gitlab_logs:
+  #gitlab_data:
