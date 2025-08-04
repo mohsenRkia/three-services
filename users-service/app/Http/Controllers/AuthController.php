@@ -27,7 +27,7 @@ class AuthController extends Controller
             ]),
             'user_registered' // Queue name
         );
-//        SendUserRegisteredEvent::dispatch($user);
+        SendUserRegisteredEvent::dispatch($user);
         return response()->json(['token' => JWTAuth::fromUser($user)], 201);
     }
 
