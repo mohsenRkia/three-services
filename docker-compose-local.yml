@@ -1,15 +1,15 @@
 services:
-  elasticsearch:
-    image: elasticsearch:7.17.12
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
-    ports:
-      - "9200:9200"
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
-    networks:
-      - main_network
+#  elasticsearch:
+#    image: elasticsearch:7.17.12
+#    container_name: elasticsearch
+#    environment:
+#      - discovery.type=single-node
+#    ports:
+#      - "9200:9200"
+#    volumes:
+#      - elasticsearch-data:/usr/share/elasticsearch/data
+#    networks:
+#      - main_network
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
@@ -47,7 +47,7 @@ services:
       - main_network
     depends_on:
       - mysql
-      - elasticsearch
+#      - elasticsearch
     ports:
       - "8080:8080"
     volumes:
@@ -120,16 +120,16 @@ services:
     depends_on:
       - mysql
 
-  yii2-basic-service:
-    build: ./yii2-basic
-    container_name: yii2-basic
-    restart: unless-stopped
-    volumes:
-      - ./yii2-basic:/var/www
-    networks:
-      - main_network
-    depends_on:
-      - mysql
+#  yii2-basic-service:
+#    build: ./yii2-basic
+#    container_name: yii2-basic
+#    restart: unless-stopped
+#    volumes:
+#      - ./yii2-basic:/var/www
+#    networks:
+#      - main_network
+#    depends_on:
+#      - mysql
 
   order-service:
     build: ./orders-service
