@@ -2,7 +2,7 @@
 
 namespace Messaging;
 
-use Src\Domain\Product\Events\ProductCreated;
+use src\Domain\Product\Events\ProductCreated;
 
 class ProductEventPublisher
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Shared\Utils;
+namespace src\Shared\Utils;
 
 final class Uuid
 {

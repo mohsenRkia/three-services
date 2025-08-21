@@ -1,9 +1,9 @@
 <?php
 
-namespace Src\Domain\Product;
+namespace src\Domain\Product;
 
-use Src\Domain\Product\Entities\Product;
-use Src\Domain\Product\ValueObjects\ProductId;
+use src\Domain\Product\Entities\Product;
+use src\Domain\Product\ValueObjects\ProductId;
 
 interface RepositoryInterface
 {

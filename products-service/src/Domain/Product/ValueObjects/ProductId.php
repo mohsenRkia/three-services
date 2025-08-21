@@ -1,9 +1,9 @@
 <?php
 
-namespace Src\Domain\Product\ValueObjects;
+namespace src\Domain\Product\ValueObjects;
 
-use http\Exception\InvalidArgumentException;
-use Src\Shared\Utils\Uuid;
+use InvalidArgumentException;
+use src\Shared\Utils\Uuid;
 
 class ProductId
 {
@@ -11,8 +11,8 @@ class ProductId
         public readonly string $value
     )
     {
-        if (Uuid::isValid($value)) {
-            throw new InvalidArgumentException("Product id '{$value}' already exists.");
+        if (!Uuid::isValid($value)) {
+            throw new InvalidArgumentException("Product id '{$value}' is not valid.");
         }
     }
 }

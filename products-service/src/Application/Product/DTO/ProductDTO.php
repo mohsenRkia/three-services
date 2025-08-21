@@ -1,9 +1,9 @@
 <?php
 
-namespace DTO;
+namespace src\Application\Product\DTO;
 
 
-use Src\Domain\Product\Entities\Product;
+use src\Domain\Product\Entities\Product;
 
 class ProductDTO
 {

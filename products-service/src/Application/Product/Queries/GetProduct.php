@@ -1,8 +1,8 @@
 <?php
 
-namespace Queries;
+namespace src\Application\Product\Queries;
 
-use Src\Domain\Product\ValueObjects\ProductId;
+use src\Domain\Product\ValueObjects\ProductId;
 
 class GetProduct
 {

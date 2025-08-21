@@ -1,8 +1,8 @@
 <?php
 
-namespace Src\Domain\Product\Events;
+namespace src\Domain\Product\Events;
 
-use Src\Domain\Product\Entities\Product;
+use src\Domain\Product\Entities\Product;
 
 class ProductCreated
 {

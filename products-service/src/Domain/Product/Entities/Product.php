@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Domain\Product\Entities;
+namespace src\Domain\Product\Entities;
 
-use Src\Domain\Product\ValueObjects\Price;
-use Src\Domain\Product\ValueObjects\ProductId;
-use Src\Domain\Product\ValueObjects\ProductName;
+use src\Domain\Product\ValueObjects\Price;
+use src\Domain\Product\ValueObjects\ProductId;
+use src\Domain\Product\ValueObjects\ProductName;
 
 class Product
 {

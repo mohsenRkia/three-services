@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Cache;
-use Src\Domain\Product\Entities\Product;
-use Src\Domain\Product\ValueObjects\Price;
-use Src\Domain\Product\ValueObjects\ProductId;
-use Src\Domain\Product\ValueObjects\ProductName;
+use src\Domain\Product\Entities\Product;
+use src\Domain\Product\ValueObjects\Price;
+use src\Domain\Product\ValueObjects\ProductId;
+use src\Domain\Product\ValueObjects\ProductName;
 
 class ProductCacheRepository
 {

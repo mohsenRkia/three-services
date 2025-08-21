@@ -1,12 +1,13 @@
 <?php
 
-namespace Services;
+namespace src\Application\Product\Services;
 
-use CreateProduct;
-use DTO\ProductDTO;
-use Queries\GetProduct;
-use Src\Domain\Product\Entities\Product;
-use Src\Domain\Product\RepositoryInterface;
+use Illuminate\Support\Str;
+use src\Application\Product\Commands\CreateProduct;
+use src\Application\Product\DTO\ProductDTO;
+use src\Domain\Product\Entities\Product;
+use src\Domain\Product\RepositoryInterface;
+use src\Domain\Product\ValueObjects\ProductId;
 
 class ProductService
 {
@@ -14,19 +15,21 @@ class ProductService
         private RepositoryInterface $repository
     ){}
 
-    public function handleCreateProduct(CreateProduct $command): void
+    public function handleCreateProduct(CreateProduct $command): Product
     {
         $product = Product::create(
-            $command->id,
+            new ProductId(Str::uuid()->toString()),
             $command->name,
             $command->price
         );
         $this->repository->store($product);
+
+        return $product;
     }
 
-    public function handleGetProduct(GetProduct $query): ?ProductDTO
+    public function handleGetProduct(ProductId $id): ?ProductDTO
     {
-        $product = $this->repository->findById($query->id);
+        $product = $this->repository->findById($id);
         if (!$product) {
             return null;
         }
