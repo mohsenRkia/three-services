@@ -3,28 +3,24 @@
 namespace src\Infrastructure\Persistence\Product;
 
 use src\Domain\Product\Entities\Product;
-use src\Domain\Product\RepositoryInterface;
+use src\Domain\Product\RepositoryReadInterface;
 use src\Domain\Product\ValueObjects\Price;
 use src\Domain\Product\ValueObjects\ProductId;
 use src\Domain\Product\ValueObjects\ProductName;
 use src\Infrastructure\Persistence\Product\ProductModel;
 
-class ProductRepository implements RepositoryInterface
+class ProductReadRepository implements RepositoryReadInterface
 {
-    public function store(Product $product): void
-    {
-        ProductModel::updateOrCreate(
-            ['id' => $product->id->value],
-            [
-                'name' => $product->name->value,
-                'price' => $product->price->value
-            ]
-        );
-    }
+    private string $connection;
 
+    public function __construct()
+    {
+        $this->connection = env('DB_READ_CONNECTION');
+    }
     public function findById(ProductId $id): ?Product
     {
-        $product = ProductModel::find($id->value);
+        $product = ProductModel::on($this->connection)
+            ->find($id->value);
         if (!$product) {
             return null;
         }

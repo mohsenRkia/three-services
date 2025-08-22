@@ -13,6 +13,6 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        ProductModel::factory()->count(10)->create();
+        ProductModel::on(env('DB_WRITE_CONNECTION'))->factory()->count(10)->create();
     }
 }
