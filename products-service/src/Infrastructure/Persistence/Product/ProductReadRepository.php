@@ -15,7 +15,7 @@ class ProductReadRepository implements RepositoryReadInterface
 
     public function __construct()
     {
-        $this->connection = env('DB_READ_CONNECTION');
+        $this->connection = env('DB_READ_CONNECTION','mysql_read');
     }
     public function findById(ProductId $id): ?Product
     {

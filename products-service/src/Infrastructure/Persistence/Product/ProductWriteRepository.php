@@ -11,7 +11,7 @@ class ProductWriteRepository implements RepositoryWriteInterface
 
     public function __construct()
     {
-        $this->connection = env('DB_WRITE_CONNECTION');
+        $this->connection = env('DB_WRITE_CONNECTION','mysql_write');
     }
     public function save(Product $product): void
     {
