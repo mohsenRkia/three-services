@@ -3,4 +3,6 @@ Includes :
 + DDD Structure
 + Unit Tests
 + Outbox Pattern (DB + outbox for message brokers)
-+ Send message to RabbitMQ
++ Task Scheduler (Send message to RabbitMQ by running php artisan schedule:run)
++ Caching
++ 

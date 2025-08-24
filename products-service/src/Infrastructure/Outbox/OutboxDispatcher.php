@@ -1,8 +1,8 @@
 <?php
 
-namespace Outbox;
+namespace src\Infrastructure\Outbox;
 
-use Messaging\RabbitMQMessageBus;
+use src\Infrastructure\Messaging\RabbitMQMessageBus;
 use src\Infrastructure\Persistence\Outbox\OutboxMessageModel;
 
 class OutboxDispatcher
@@ -29,7 +29,7 @@ class OutboxDispatcher
                 ]);
             } catch (\Throwable $e) {
                 $message->update([
-                    'status' => 'processed',
+                    'status' => 'failed',
                     'processed_at' => now(),
                 ]);
             }
