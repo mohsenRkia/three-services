@@ -8,11 +8,14 @@ use src\Application\Product\Commands\CreateProduct;
 use src\Application\Product\DTO\ProductDTO;
 use src\Application\Product\Queries\GetProduct;
 use src\Domain\Product\Entities\Product;
+use src\Domain\Product\Enums\EventTypeEnum;
+use src\Domain\Product\Enums\OutboxStatusEnum;
 use src\Domain\Product\Events\ProductCreated;
 use src\Domain\Product\RepositoryReadInterface;
 use src\Domain\Product\RepositoryWriteInterface;
 use src\Domain\Product\ValueObjects\ProductId;
 use src\Infrastructure\Persistence\Outbox\OutboxMessageModel;
+use src\Infrastructure\Persistence\Product\ProductModel;
 
 class ProductService
 {
@@ -34,11 +37,11 @@ class ProductService
             $event = new ProductCreated($product);
 
             OutboxMessageModel::create([
-                'aggregate_type' => 'Product',
+                'aggregate_type' => ProductModel::class,
                 'aggregate_id'   => $product->id->value,
-                'event_type'     => 'ProductCreated',
+                'event_type'     => EventTypeEnum::CREATED,
                 'payload'        => json_encode($event->toArray()),
-                'status'         => 'pending'
+                'status'         => OutboxStatusEnum::PENDING
             ]);
 
             return $product;

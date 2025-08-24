@@ -2,6 +2,7 @@
 
 namespace src\Infrastructure\Outbox;
 
+use src\Domain\Product\Enums\OutboxStatusEnum;
 use src\Infrastructure\Messaging\RabbitMQMessageBus;
 use src\Infrastructure\Persistence\Outbox\OutboxMessageModel;
 
@@ -24,12 +25,12 @@ class OutboxDispatcher
                 );
 
                 $message->update([
-                    'status' => 'processed',
+                    'status' => OutboxStatusEnum::PROCESSED,
                     'processed_at' => now(),
                 ]);
             } catch (\Throwable $e) {
                 $message->update([
-                    'status' => 'failed',
+                    'status' => OutboxStatusEnum::FAILED,
                     'processed_at' => now(),
                 ]);
             }

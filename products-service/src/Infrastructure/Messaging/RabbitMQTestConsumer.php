@@ -4,15 +4,10 @@ namespace src\Infrastructure\Messaging;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
-class RabbitMQTestConsumer
+class RabbitMQTestConsumer extends RabbitMQ
 {
-    private string $host = "rabbitmq";
-    private int $port = 5672;
-    private string $user = "guest";
-    private string $password = "guest";
-    private string $exchange = "product_rabbitmq";
     private string $queue = "product_test_queue";
-    private string $routingKey = "ProductCreated"; //Product
+    private string $routingKey = "ProductCreated"; //event_type
 
     public function listen()
     {
@@ -20,7 +15,7 @@ class RabbitMQTestConsumer
 
         $channel = $connection->channel();
 
-        $channel->exchange_declare($this->exchange, 'topic', false, true, false);
+        $channel->exchange_declare($this->exchange, $this->exchange_type, false, true, false);
 
         list($queue_name, ,) = $channel->queue_declare($this->queue, false, true, false, false);
 

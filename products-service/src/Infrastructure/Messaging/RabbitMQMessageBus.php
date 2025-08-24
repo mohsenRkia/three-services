@@ -6,14 +6,8 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use src\Domain\Product\Events\ProductCreated;
 
-class RabbitMQMessageBus
+class RabbitMQMessageBus extends RabbitMQ
 {
-    private string $host = "rabbitmq";
-    private int $port = 5672;
-    private string $user = "guest";
-    private string $password = "guest";
-    private string $exchange = "product_rabbitmq";
-
     public function publish(string $event_type,array $payload): void
     {
         $connection = new AMQPStreamConnection(
@@ -22,9 +16,7 @@ class RabbitMQMessageBus
 
         $channel = $connection->channel();
 
-
-
-        $channel->exchange_declare($this->exchange, 'topic', false, true, false);
+        $channel->exchange_declare($this->exchange, $this->exchange_type, false, true, false);
 
         $message = new AMQPMessage(json_encode($payload), [
             'content_type' => 'application/json',
