@@ -10,8 +10,7 @@ class CreateProduct
     public function __construct(
         public readonly ProductName $name,
         public readonly Price $price
-    )
-    {
+    ){}
 
-    }
+
 }

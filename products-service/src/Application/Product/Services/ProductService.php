@@ -2,14 +2,17 @@
 
 namespace src\Application\Product\Services;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use src\Application\Product\Commands\CreateProduct;
 use src\Application\Product\DTO\ProductDTO;
 use src\Application\Product\Queries\GetProduct;
 use src\Domain\Product\Entities\Product;
+use src\Domain\Product\Events\ProductCreated;
 use src\Domain\Product\RepositoryReadInterface;
 use src\Domain\Product\RepositoryWriteInterface;
 use src\Domain\Product\ValueObjects\ProductId;
+use src\Infrastructure\Persistence\Outbox\OutboxMessageModel;
 
 class ProductService
 {
@@ -20,14 +23,26 @@ class ProductService
 
     public function handleCreateProduct(CreateProduct $command): Product
     {
-        $product = Product::create(
-            new ProductId(Str::uuid()->toString()),
-            $command->name,
-            $command->price
-        );
-        $this->repositoryWrite->save($product);
+        return DB::transaction(function () use ($command) {
+            $product = Product::create(
+                new ProductId(Str::uuid()->toString()),
+                $command->name,
+                $command->price
+            );
+            $this->repositoryWrite->save($product);
 
-        return $product;
+            $event = new ProductCreated($product);
+
+            OutboxMessageModel::create([
+                'aggregate_type' => 'Product',
+                'aggregate_id'   => $product->id->value,
+                'event_type'     => ProductCreated::class,
+                'payload'        => json_encode($event->toArray()),
+                'status'         => 'pending'
+            ]);
+
+            return $product;
+        });
     }
 
     public function handleGetProduct(GetProduct $query): ?ProductDTO
