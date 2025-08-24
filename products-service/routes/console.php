@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 
 Schedule::command('outbox:dispatch')->everyFifteenSeconds();
+Schedule::command('outbox:consume')->everyFifteenSeconds();

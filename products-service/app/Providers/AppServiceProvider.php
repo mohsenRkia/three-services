@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use src\Domain\Product\RepositoryReadInterface;
 use src\Domain\Product\RepositoryWriteInterface;
+use src\Infrastructure\Outbox\Console\ConsumeOutboxMessagesCommand;
 use src\Infrastructure\Outbox\Console\DispatchOutboxMessagesCommand;
 use src\Infrastructure\Persistence\Product\ProductWriteRepository;
 use src\Infrastructure\Persistence\Product\ProductReadRepository;
@@ -21,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->commands([
             DispatchOutboxMessagesCommand::class,
+            ConsumeOutboxMessagesCommand::class,
         ]);
     }
 

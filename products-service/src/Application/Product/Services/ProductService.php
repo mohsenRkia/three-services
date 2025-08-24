@@ -36,7 +36,7 @@ class ProductService
             OutboxMessageModel::create([
                 'aggregate_type' => 'Product',
                 'aggregate_id'   => $product->id->value,
-                'event_type'     => ProductCreated::class,
+                'event_type'     => 'ProductCreated',
                 'payload'        => json_encode($event->toArray()),
                 'status'         => 'pending'
             ]);
