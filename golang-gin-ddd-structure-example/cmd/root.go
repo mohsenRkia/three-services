@@ -16,10 +16,11 @@ func init() {
 	rootCmd.AddCommand(serveCmd)
 }
 func Execute(defaultCommand string) {
-	if defaultCommand != "" {
+	if len(os.Args) == 1 && defaultCommand != "" {
 		os.Args = append([]string{os.Args[0], defaultCommand}, os.Args[1:]...)
 	}
-	if err := serveCmd.Execute(); err != nil {
+
+	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
