@@ -29,14 +29,14 @@ func OkResponse[T any](data T) APIResponse[T] {
 	return NewAPIResponse[T](http.StatusOK, &data, nil, "عملیات با موفقیت انجام شد")
 }
 
-func ErrorResponse[T any](statusCode int, errors []string, message string) APIResponse[T] {
+func HandleHTTPErrors(ctx *gin.Context, err *HTTPError, message string) {
+	sendErrorResponse(ctx, err.Code, message, *err.Messages...)
+}
+
+func errorResponse[T any](statusCode int, errors []string, message string) APIResponse[T] {
 	return NewAPIResponse[T](statusCode, nil, errors, message)
 }
 
-func SendErrorResponse(ctx *gin.Context, statusCode int, faMessage string, messages ...string) {
-	ctx.AbortWithStatusJSON(statusCode, ErrorResponse[any](statusCode, messages, faMessage))
-}
-
-func HandleHTTPErrors(ctx *gin.Context, err *HTTPError, message string) {
-	SendErrorResponse(ctx, err.Code, message, *err.Messages...)
+func sendErrorResponse(ctx *gin.Context, statusCode int, faMessage string, messages ...string) {
+	ctx.AbortWithStatusJSON(statusCode, errorResponse[any](statusCode, messages, faMessage))
 }

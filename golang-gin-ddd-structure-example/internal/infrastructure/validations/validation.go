@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"myGolangFramework/internal/delivery/http/shared/enums"
 	"myGolangFramework/internal/delivery/http/shared/response"
 	"myGolangFramework/internal/infrastructure/validations/rules"
 	"net/http"
 )
 
-var validate = validator.New()
+var validatorInstance = validator.New()
 
 type ValidationErrorResponse struct {
 	FailedField string
@@ -18,29 +19,17 @@ type ValidationErrorResponse struct {
 	Value       interface{}
 }
 
-const (
-	InternalServerErrorErrorMsg     string = "Something went wrong, please try again later!"
-	FailedToParseBodyErrorMsg       string = "Failed to Parse Request Body"
-	InvalidPaginationParamsErrorMsg string = "Invalid Page or Count in params"
-	FailedToParseQueryErrorMsg      string = "Failed to Parse Query Params"
-	InvalidIDParamErrorMsg          string = "Invalid ID in params"
-	FileIsNotPDFErrorMsg            string = "Uploaded file is not pdf"
-	FailedToParseFileErrorMsg       string = "Failed to parse uploaded file"
-)
-
 func ValidatePayload[T any](ctx *gin.Context) (*T, *response.HTTPError) {
 	var body T
 
-	// Parse body (JSON)
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		return nil,
-			response.NewHTTPError(http.StatusBadRequest, FailedToParseBodyErrorMsg)
+			response.NewHTTPError(http.StatusBadRequest, enums.FailedToParseBodyErrorMsg)
 	}
 
-	// Validate body
-	if errs := Validate(body); len(errs) > 0 {
+	if errs := validate(body); len(errs) > 0 {
 		return nil,
-			response.NewHTTPError(http.StatusBadRequest, GetValidationErrors(errs)...)
+			response.NewHTTPError(http.StatusBadRequest, getValidationErrors(errs)...)
 	}
 
 	return &body, nil
@@ -51,21 +40,21 @@ func ValidateQueries[T any](ctx *gin.Context) (*T, *response.HTTPError) {
 
 	if err := ctx.ShouldBindQuery(&query); err != nil {
 		return nil,
-			response.NewHTTPError(http.StatusBadRequest, FailedToParseQueryErrorMsg)
+			response.NewHTTPError(http.StatusBadRequest, enums.FailedToParseQueryErrorMsg)
 	}
 
-	if errs := Validate(query); len(errs) > 0 {
+	if errs := validate(query); len(errs) > 0 {
 		return nil,
-			response.NewHTTPError(http.StatusBadRequest, GetValidationErrors(errs)...)
+			response.NewHTTPError(http.StatusBadRequest, getValidationErrors(errs)...)
 	}
 
 	return &query, nil
 }
 
-func Validate(data interface{}) []ValidationErrorResponse {
+func validate(data interface{}) []ValidationErrorResponse {
 	validationErrors := []ValidationErrorResponse{}
 
-	errs := validate.Struct(data)
+	errs := validatorInstance.Struct(data)
 	if errs != nil {
 		for _, err := range errs.(validator.ValidationErrors) {
 			// In this case data object is actually holding the User struct
@@ -83,7 +72,7 @@ func Validate(data interface{}) []ValidationErrorResponse {
 	return validationErrors
 }
 
-func GetValidationErrors(errors []ValidationErrorResponse) []string {
+func getValidationErrors(errors []ValidationErrorResponse) []string {
 	var errorsSlice []string
 
 	for _, err := range errors {
@@ -133,19 +122,19 @@ func GetValidationErrors(errors []ValidationErrorResponse) []string {
 // me
 func Init() {
 	//v := validator.New()
-	existsErr := validate.RegisterValidation("exists", rules.Exists)
+	existsErr := validatorInstance.RegisterValidation("exists", rules.Exists)
 	if existsErr != nil {
 		return
 	}
-	uniqueErr := validate.RegisterValidation("unique", rules.Unique)
+	uniqueErr := validatorInstance.RegisterValidation("unique", rules.Unique)
 	if uniqueErr != nil {
 		return
 	}
-	phoneNumberErr := validate.RegisterValidation("phonenumber", rules.PhoneNumber)
+	phoneNumberErr := validatorInstance.RegisterValidation("phonenumber", rules.PhoneNumber)
 	if phoneNumberErr != nil {
 		return
 	}
-	inErr := validate.RegisterValidation("in", rules.IN)
+	inErr := validatorInstance.RegisterValidation("in", rules.IN)
 	if inErr != nil {
 		return
 	}
