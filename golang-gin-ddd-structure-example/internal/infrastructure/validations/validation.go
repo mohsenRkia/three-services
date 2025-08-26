@@ -4,16 +4,12 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"myGolangFramework/internal/delivery/http/shared/response"
 	"myGolangFramework/internal/infrastructure/validations/rules"
 	"net/http"
 )
 
 var validate = validator.New()
-
-type HTTPError struct {
-	Code     int
-	Messages *[]string
-}
 
 type ValidationErrorResponse struct {
 	FailedField string
@@ -32,29 +28,38 @@ const (
 	FailedToParseFileErrorMsg       string = "Failed to parse uploaded file"
 )
 
-func NewHTTPError(code int, messages ...string) *HTTPError {
-	return &HTTPError{
-		Code:     code,
-		Messages: &messages,
-	}
-}
-
-func ValidatePayload[T any](ctx *gin.Context) (*T, *HTTPError) {
+func ValidatePayload[T any](ctx *gin.Context) (*T, *response.HTTPError) {
 	var body T
 
 	// Parse body (JSON)
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		return nil,
-			NewHTTPError(http.StatusBadRequest, FailedToParseBodyErrorMsg)
+			response.NewHTTPError(http.StatusBadRequest, FailedToParseBodyErrorMsg)
 	}
 
 	// Validate body
 	if errs := Validate(body); len(errs) > 0 {
 		return nil,
-			NewHTTPError(http.StatusBadRequest, GetValidationErrors(errs)...)
+			response.NewHTTPError(http.StatusBadRequest, GetValidationErrors(errs)...)
 	}
 
 	return &body, nil
+}
+
+func ValidateQueries[T any](ctx *gin.Context) (*T, *response.HTTPError) {
+	var query T
+
+	if err := ctx.ShouldBindQuery(&query); err != nil {
+		return nil,
+			response.NewHTTPError(http.StatusBadRequest, FailedToParseQueryErrorMsg)
+	}
+
+	if errs := Validate(query); len(errs) > 0 {
+		return nil,
+			response.NewHTTPError(http.StatusBadRequest, GetValidationErrors(errs)...)
+	}
+
+	return &query, nil
 }
 
 func Validate(data interface{}) []ValidationErrorResponse {
