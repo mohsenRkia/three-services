@@ -36,6 +36,7 @@ class ProductService
 
             $event = new ProductCreated($product);
 
+            //todo use entity, create interface and repository
             OutboxMessageModel::create([
                 'aggregate_type' => ProductModel::class,
                 'aggregate_id'   => $product->id->value,
