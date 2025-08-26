@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"myGolangFramework/internal/application/user"
 	"myGolangFramework/internal/application/user/dto"
+	"myGolangFramework/internal/delivery/http/shared/enums"
 	"myGolangFramework/internal/delivery/http/shared/response"
 	"myGolangFramework/internal/infrastructure/validations"
 	"net/http"
@@ -20,7 +21,7 @@ func NewHandler() *Handler {
 func (h *Handler) CreateUser(ctx *gin.Context) {
 	req, vErr := validations.ValidatePayload[dto.CreateUserDTO](ctx)
 	if vErr != nil {
-		response.HandleHTTPErrors(ctx, vErr, validations.FailedToParseBodyErrorMsg)
+		response.HandleHTTPErrors(ctx, vErr, enums.FailedToParseBodyErrorMsg)
 		return
 	}
 
@@ -28,7 +29,7 @@ func (h *Handler) CreateUser(ctx *gin.Context) {
 		response.HandleHTTPErrors(ctx, response.NewHTTPError(
 			http.StatusInternalServerError,
 			err.Error(),
-		), validations.FailedToParseBodyErrorMsg)
+		), enums.FailedToParseBodyErrorMsg)
 		return
 	}
 
