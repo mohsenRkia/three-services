@@ -1,12 +1,13 @@
 package models
 
 import (
+	"gorm.io/gorm"
 	"myGolangFramework/internal/domain/user"
 	"time"
 )
 
 type User struct {
-	ID        string `gorm:"primaryKey"`
+	gorm.Model
 	Email     string `gorm:"uniqueIndex;size:128"`
 	Password  string
 	CreatedAt time.Time
@@ -14,7 +15,6 @@ type User struct {
 
 func ToModel(u *user.User) *User {
 	return &User{
-		ID:        u.ID,
 		Email:     u.Email,
 		Password:  u.Password,
 		CreatedAt: u.CreatedAt,

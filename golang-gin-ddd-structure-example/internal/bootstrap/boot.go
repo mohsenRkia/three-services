@@ -3,11 +3,11 @@ package bootstrap
 import (
 	"myGolangFramework/internal/bootstrap/config/db"
 	"myGolangFramework/internal/bootstrap/routing"
-	"myGolangFramework/pkg/customValidation"
+	"myGolangFramework/internal/infrastructure/validations"
 )
 
 func Boot() {
 	db.Connect()
-	customValidation.Init()
+	validations.Init()
 	routing.Serve()
 }

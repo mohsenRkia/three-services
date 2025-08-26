@@ -1,19 +1,27 @@
 package user
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 type User struct {
-	ID        string
+	ID        uint
 	Email     string
 	Password  string
 	CreatedAt time.Time
 }
 
-func NewUser(id, email, password string) *User {
+func NewUser(email, password string) (*User, error) {
+	if email == "" {
+		return nil, errors.New("email is required")
+	}
+	if password == "" {
+		return nil, errors.New("password is required")
+	}
 	return &User{
-		ID:        id,
 		Email:     email,
 		Password:  password,
 		CreatedAt: time.Now(),
-	}
+	}, nil
 }

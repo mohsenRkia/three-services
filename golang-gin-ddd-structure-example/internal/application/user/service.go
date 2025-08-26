@@ -17,7 +17,10 @@ func (s *Service) GetUser(id string) (*user.User, error) {
 	return s.repo.FindByID(id)
 }
 
-func (s *Service) CreateUser(id, email, password string) error {
-	u := user.NewUser(id, email, password)
+func (s *Service) CreateUser(email, password string) error {
+	u, err := user.NewUser(email, password)
+	if err != nil {
+		return err
+	}
 	return s.repo.Create(u)
 }
