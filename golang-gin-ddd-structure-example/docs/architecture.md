@@ -68,6 +68,9 @@ myapp/
 │   │   │   └── Producers/            ← Publishes to RabbitMQ/Kafka/...
 │   │   │       └── ...
 │   │   │
+│   │   ├── validation/              # اعتبارسنجی سفارشی
+│   │   │   ├── rules/
+│   │   │   └── validation.go
 │   │   ├── cache/               # Redis, Memcached, ...
 │   │   ├── queue/               # Kafka, RabbitMQ، etc
 │   │   ├── email/               # Email providers (SMTP, SES, ...)
@@ -84,7 +87,6 @@ myapp/
 ├── pkg/                         # کتابخانه‌های قابل استفاده مجدد
 │   ├── errors/                  # مدیریت خطاهای سفارشی
 │   ├── utils/                   # ابزارهای کمکی
-│   ├── validation/              # اعتبارسنجی سفارشی
 │   └── logger/                  # logger مستقل
 │
 │
