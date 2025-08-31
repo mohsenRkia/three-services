@@ -10,7 +10,6 @@ type UserRepository interface {
 	List() ([]*user.User, error)
 }
 
-// RepositoryProvider add every repositories to tx
-type RepositoryProvider interface {
+type TXRepositoryProviderInterface interface {
 	User() UserRepository
 }

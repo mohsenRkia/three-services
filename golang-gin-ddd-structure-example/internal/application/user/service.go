@@ -31,7 +31,7 @@ func (s *Service) CreateUser(email, password string) error {
 		return err
 	}
 
-	return s.uow.Do(func(r domain.RepositoryProvider) error {
+	return s.uow.Do(func(r domain.TXRepositoryProviderInterface) error {
 		if err := r.User().Create(u); err != nil {
 			return err
 		}

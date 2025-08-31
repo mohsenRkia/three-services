@@ -14,22 +14,21 @@ func NewUowGorm(db *gorm.DB) *UowGorm {
 	return &UowGorm{db: db}
 }
 
-func (u *UowGorm) Do(fn func(repository domain.RepositoryProvider) error) error {
+func (u *UowGorm) Do(fn func(repository domain.TXRepositoryProviderInterface) error) error {
 	return u.db.Transaction(func(tx *gorm.DB) error {
-		repoProvider := &gormRepositoryProvider{
+		repoProvider := &TXRepositoryProvider{
 			tx: tx,
 		}
 		return fn(repoProvider)
 	})
 }
 
-// ///////////////
-type gormRepositoryProvider struct {
+type TXRepositoryProvider struct {
 	tx       *gorm.DB
 	userRepo domain.UserRepository
 }
 
-func (p *gormRepositoryProvider) User() domain.UserRepository {
+func (p *TXRepositoryProvider) User() domain.UserRepository {
 	if p.userRepo == nil {
 		p.userRepo = user.NewUserRepository(p.tx)
 	}

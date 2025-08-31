@@ -5,5 +5,5 @@ import (
 )
 
 type UnitOfWork interface {
-	Do(fn func(r domain.RepositoryProvider) error) error
+	Do(fn func(r domain.TXRepositoryProviderInterface) error) error
 }
