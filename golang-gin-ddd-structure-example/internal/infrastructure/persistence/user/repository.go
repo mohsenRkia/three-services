@@ -2,7 +2,7 @@ package user
 
 import (
 	"gorm.io/gorm"
-	"myGolangFramework/internal/bootstrap/config/db"
+	"myGolangFramework/internal/domain"
 	"myGolangFramework/internal/domain/user"
 	"myGolangFramework/internal/infrastructure/persistence/models"
 )
@@ -11,8 +11,8 @@ type UserRepository struct {
 	db *gorm.DB
 }
 
-func NewUserRepository() user.Repository {
-	return &UserRepository{db: db.Connection()}
+func NewUserRepository(gdb *gorm.DB) domain.UserRepository {
+	return &UserRepository{db: gdb}
 }
 
 func (r *UserRepository) FindByID(id string) (*user.User, error) {

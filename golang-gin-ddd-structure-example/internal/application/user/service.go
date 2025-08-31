@@ -1,18 +1,26 @@
 package user
 
 import (
+	"myGolangFramework/internal/application"
+	"myGolangFramework/internal/bootstrap/config/db"
+	"myGolangFramework/internal/domain"
 	"myGolangFramework/internal/domain/user"
 	userRepo "myGolangFramework/internal/infrastructure/persistence/user"
 )
 
 type Service struct {
-	repo user.Repository
+	uow  application.UnitOfWork
+	repo domain.UserRepository
 }
 
 func NewService() *Service {
-	return &Service{repo: userRepo.NewUserRepository()}
+	return &Service{
+		uow:  db.UoWInstance(),
+		repo: userRepo.NewUserRepository(db.Connection()),
+	}
 }
 
+// return &Service{repo: userRepo.NewUserRepository()}
 func (s *Service) GetUser(id string) (*user.User, error) {
 	return s.repo.FindByID(id)
 }
@@ -22,5 +30,12 @@ func (s *Service) CreateUser(email, password string) error {
 	if err != nil {
 		return err
 	}
-	return s.repo.Create(u)
+
+	return s.uow.Do(func(r domain.RepositoryProvider) error {
+		if err := r.User().Create(u); err != nil {
+			return err
+		}
+		///other creation for transactions
+		return nil
+	})
 }
