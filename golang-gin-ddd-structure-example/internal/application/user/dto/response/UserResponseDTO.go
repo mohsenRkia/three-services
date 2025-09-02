@@ -10,6 +10,7 @@ import (
 type UserResponseDTO struct {
 	ID    uint   `json:"id"`
 	Email string `json:"email"`
+	Phone string `json:"phone"`
 }
 
 func ToResponseUserDTO(data *user.User) *UserResponseDTO {
@@ -19,6 +20,7 @@ func ToResponseUserDTO(data *user.User) *UserResponseDTO {
 	return &UserResponseDTO{
 		ID:    data.ID,
 		Email: data.Email,
+		Phone: data.Phone,
 	}
 }
 
