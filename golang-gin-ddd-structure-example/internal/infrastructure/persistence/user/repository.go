@@ -4,6 +4,7 @@ import (
 	"gorm.io/gorm"
 	"myGolangFramework/internal/domain"
 	"myGolangFramework/internal/domain/user"
+	"myGolangFramework/internal/infrastructure/pagination"
 	"myGolangFramework/internal/infrastructure/persistence/models"
 )
 
@@ -35,15 +36,20 @@ func (r *UserRepository) Delete(id string) error {
 	return r.db.Delete(&models.User{}, "id = ?", id).Error
 }
 
-func (r *UserRepository) List() ([]*user.User, error) {
-	var usersModel []models.User
-	if err := r.db.Find(&usersModel).Error; err != nil {
+func (r *UserRepository) List(p *pagination.Pagination) ([]*models.User, error) {
+	var usersModel []*models.User
+
+	if err := p.WithTotal(r.db, &models.User{}); err != nil {
 		return nil, err
 	}
 
-	var users []*user.User
-	for _, m := range usersModel {
-		users = append(users, models.ToEntity(&m))
+	if err := r.db.Scopes(p.Scope()).Find(&usersModel).Error; err != nil {
+		return nil, err
 	}
-	return users, nil
+
+	return usersModel, nil
 }
+
+//if err := r.db.Scopes(p.Scope()).Find(&usersModel).Error; err != nil {
+//return nil, err
+//}

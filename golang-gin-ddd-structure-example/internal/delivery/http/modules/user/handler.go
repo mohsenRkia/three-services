@@ -3,7 +3,7 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 	"myGolangFramework/internal/application/user"
-	"myGolangFramework/internal/application/user/dto"
+	"myGolangFramework/internal/application/user/dto/request"
 	"myGolangFramework/internal/delivery/http/shared/enums"
 	"myGolangFramework/internal/delivery/http/shared/response"
 	"myGolangFramework/internal/infrastructure/validations"
@@ -19,7 +19,7 @@ func NewHandler() *Handler {
 }
 
 func (h *Handler) CreateUser(ctx *gin.Context) {
-	req, vErr := validations.ValidatePayload[dto.CreateUserDTO](ctx)
+	req, vErr := validations.ValidatePayload[request.CreateUserRequestDTO](ctx)
 	if vErr != nil {
 		response.HandleHTTPErrors(ctx, vErr, enums.FailedToParseBodyErrorMsg)
 		return
@@ -47,4 +47,24 @@ func (h *Handler) GetUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, getUser)
+}
+
+func (h *Handler) List(ctx *gin.Context) {
+	req, vErr := validations.ValidateQueries[request.ListUserRequestDTO](ctx)
+	if vErr != nil {
+		response.HandleHTTPErrors(ctx, vErr, enums.FailedToParseBodyErrorMsg)
+		return
+	}
+
+	data, err := h.service.List(req.Page, req.Limit)
+	if err != nil {
+		response.HandleHTTPErrors(ctx, response.NewHTTPError(
+			http.StatusInternalServerError,
+			err.Error(),
+		), enums.InternalServerErrorErrorMsg)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, data)
+	return
 }

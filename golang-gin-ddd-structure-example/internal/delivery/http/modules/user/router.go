@@ -8,4 +8,5 @@ func Routes(router *gin.RouterGroup) {
 	handler := NewHandler()
 	router.POST("/users", handler.CreateUser)
 	router.GET("/users/:id", handler.GetUser)
+	router.GET("/users", handler.List)
 }
