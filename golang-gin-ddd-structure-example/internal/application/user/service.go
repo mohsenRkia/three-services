@@ -23,31 +23,43 @@ func NewService() *Service {
 	}
 }
 
-func (s *Service) List(page, limit int) (sharedDto.PaginationData[response.ListUserResponseDTO], error) {
+func (s *Service) List(page, limit int) (*sharedDto.PaginationData[response.UserResponseDTO], error) {
 	p := pagination.New(page, limit)
 	users, err := s.repo.List(p)
 	if err != nil {
-		return response.ListUserDTOResponses(users, p), err
+		return response.ToResponsesUserDTO(nil, p), err
 	}
-	return response.ListUserDTOResponses(users, p), nil
+	return response.ToResponsesUserDTO(users, p), nil
 }
 
-// return &Service{repo: userRepo.NewUserRepository()}
-func (s *Service) GetUser(id string) (*user.User, error) {
-	return s.repo.FindByID(id)
+func (s *Service) GetUser(id string) (*response.UserResponseDTO, error) {
+	data, err := s.repo.FindByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return response.ToResponseUserDTO(data), nil
 }
 
-func (s *Service) CreateUser(email, password string) error {
+func (s *Service) CreateUser(email, password string) (*response.UserResponseDTO, error) {
 	u, err := user.NewUser(email, password)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return s.uow.Do(func(r domain.TXRepositoryProviderInterface) error {
-		if err := r.User().Create(u); err != nil {
+	var us *user.User
+
+	storeErr := s.uow.Do(func(r domain.TXRepositoryProviderInterface) error {
+		us, err = r.User().Store(u)
+		if err != nil {
 			return err
 		}
 		///other creation for transactions
 		return nil
 	})
+
+	if storeErr != nil {
+		return nil, err
+	}
+
+	return response.ToResponseUserDTO(us), nil
 }

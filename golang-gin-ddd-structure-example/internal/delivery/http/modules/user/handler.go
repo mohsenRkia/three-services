@@ -25,7 +25,8 @@ func (h *Handler) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	if err := h.service.CreateUser(req.Email, req.Password); err != nil {
+	data, err := h.service.CreateUser(req.Email, req.Password)
+	if err != nil {
 		response.HandleHTTPErrors(ctx, response.NewHTTPError(
 			http.StatusInternalServerError,
 			err.Error(),
@@ -33,7 +34,7 @@ func (h *Handler) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.Status(http.StatusCreated)
+	ctx.JSON(http.StatusCreated, response.OkResponse(data))
 	return
 }
 

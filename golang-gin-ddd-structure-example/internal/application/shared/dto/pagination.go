@@ -3,7 +3,7 @@ package dto
 import "myGolangFramework/internal/infrastructure/pagination"
 
 type PaginationData[T any] struct {
-	Data       []T        `json:"data"`
+	Data       []*T       `json:"data"`
 	Pagination Pagination `json:"pagination"`
 }
 
@@ -14,9 +14,9 @@ type Pagination struct {
 	TotalPages int   `json:"total_pages"`
 }
 
-func NewPaginationData[T any](items []T, p *pagination.Pagination) PaginationData[T] {
+func NewPaginationData[T any](items []*T, p *pagination.Pagination) *PaginationData[T] {
 	totalPages := int((p.Total + int64(p.Limit) - 1) / int64(p.Limit))
-	return PaginationData[T]{
+	return &PaginationData[T]{
 		Data: items,
 		Pagination: Pagination{
 			Page:       p.Page,

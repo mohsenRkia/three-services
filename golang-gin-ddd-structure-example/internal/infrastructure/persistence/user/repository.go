@@ -24,8 +24,12 @@ func (r *UserRepository) FindByID(id string) (*user.User, error) {
 	return models.ToEntity(&m), nil
 }
 
-func (r *UserRepository) Create(u *user.User) error {
-	return r.db.Create(models.ToModel(u)).Error
+func (r *UserRepository) Store(u *user.User) (*user.User, error) {
+	model := models.ToModel(u)
+	if err := r.db.Create(model).Error; err != nil {
+		return nil, err
+	}
+	return models.ToEntity(model), nil
 }
 
 func (r *UserRepository) Update(u *user.User) error {
@@ -36,7 +40,7 @@ func (r *UserRepository) Delete(id string) error {
 	return r.db.Delete(&models.User{}, "id = ?", id).Error
 }
 
-func (r *UserRepository) List(p *pagination.Pagination) ([]*models.User, error) {
+func (r *UserRepository) List(p *pagination.Pagination) ([]*user.User, error) {
 	var usersModel []*models.User
 
 	if err := p.WithTotal(r.db, &models.User{}); err != nil {
@@ -47,7 +51,12 @@ func (r *UserRepository) List(p *pagination.Pagination) ([]*models.User, error) 
 		return nil, err
 	}
 
-	return usersModel, nil
+	var users []*user.User
+	for _, m := range usersModel {
+		users = append(users, models.ToEntity(m))
+	}
+
+	return users, nil
 }
 
 //if err := r.db.Scopes(p.Scope()).Find(&usersModel).Error; err != nil {
