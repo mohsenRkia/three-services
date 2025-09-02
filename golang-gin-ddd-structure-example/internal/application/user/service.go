@@ -63,16 +63,16 @@ func (s *Service) CreateUser(email, password, phone string) (*response.UserRespo
 		}
 		///other creation for transactions
 
-		//Concurrency
-		go s.Emailer.SendWelcomeEmail(us)
-		go s.SMS.SendSMS(us.Phone, "Sms Sent...")
-		go s.Logger.AddLog("User created successfully", us.ID)
 		return nil
 	})
 
 	if storeErr != nil {
-		return nil, err
+		return nil, storeErr
 	}
 
+	//Concurrency
+	go s.Emailer.SendWelcomeEmail(us)
+	go s.SMS.SendSMS(us.Phone, "Sms Sent...")
+	go s.Logger.AddLog("User created successfully", us.ID)
 	return response.ToResponseUserDTO(us), nil
 }
