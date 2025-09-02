@@ -35,7 +35,6 @@ func (h *Handler) CreateUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, response.OkResponse(data))
-	return
 }
 
 func (h *Handler) GetUser(ctx *gin.Context) {
@@ -67,5 +66,4 @@ func (h *Handler) List(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, data)
-	return
 }
